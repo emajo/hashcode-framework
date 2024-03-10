@@ -2,7 +2,9 @@
 
 namespace Utils;
 
-use JetBrains\PhpStorm\NoReturn;
+use Utils\ColoredString\BackgroundColor;
+use Utils\ColoredString\ColoredString;
+use Utils\ColoredString\ForegroundColor;
 
 class Log
 {
@@ -14,13 +16,13 @@ class Log
         self::$verbose = $verbose;
     }
 
-    #[NoReturn] public static function error($content): void
+    public static function error($content): void
     {
-        Log::out("ERROR: " . $content, 0, 'red');
+        Log::out("ERROR: " . $content, 0, ForegroundColor::RED);
         die();
     }
 
-    public static function out($content, $level = 0, $textColor = null, $backgroundColor = null): void
+    public static function out(string $content, int $level = 0, ForegroundColor $textColor = null, BackgroundColor $backgroundColor = null): void
     {
         if (self::$verbose) {
             $padding = str_repeat("   ", $level);
@@ -33,8 +35,7 @@ class Log
             $outputString .= $padding . $content;
 
             if ($textColor !== null || $backgroundColor !== null) {
-                $colors = new ColoredString();
-                echo $colors->getColoredString($outputString, $textColor, $backgroundColor) . "\n";
+                echo ColoredString::getColoredString($outputString, $textColor, $backgroundColor) . "\n";
             } else
                 echo $outputString . "\n";
         }

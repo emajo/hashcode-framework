@@ -8,6 +8,9 @@
 
 namespace Utils;
 
+use Utils\ColoredString\BackgroundColor;
+use Utils\ColoredString\ForegroundColor;
+
 class Cerberus
 {
     public static $db;
@@ -61,7 +64,7 @@ class Cerberus
         while (true) {
             self::readDb();
             echo chr(27) . chr(91) . 'H' . chr(27) . chr(91) . 'J';
-            Log::out("\n" . 'Welcome to Cerberus', 0, 'white', 'red');
+            Log::out("\n" . 'Welcome to Cerberus', 0, ForegroundColor::WHITE, BackgroundColor::RED);
 
             Log::out("\n" . 'Commands', 1);
             Log::out('1. (l)aunch <scriptname without extension .php> (eg. launch sol-topo-1) [no scriptname = last scriptname]', 2);
@@ -88,7 +91,7 @@ class Cerberus
             Log::out("\n" . count($scripts) . ' scripts', 1);
 
             foreach ($scripts as $script) {
-                Log::out($script['id'] . ') ' . $script['script'] . ' (' . json_encode($script['params']) . ') => ' . trim($script['lastline']), 1, $script['status'] == 'running' ? 'light_purple' : 'yellow');
+                Log::out($script['id'] . ') ' . $script['script'] . ' (' . json_encode($script['params']) . ') => ' . trim($script['lastline']), 1, $script['status'] == 'running' ? ForegroundColor::LIGHT_PURPLE : ForegroundColor::YELLOW);
             }
 
 
@@ -127,7 +130,7 @@ class Cerberus
         $ret = shell_exec($cmd);
         $params = json_decode($ret, true);
         if (!$params) {
-            Log::out('Can\'t find ' . $scriptName . '.php!', 0, 'red');
+            Log::out('Can\'t find ' . $scriptName . '.php!', 0, ForegroundColor::RED);
             sleep(1);
             return;
         }
@@ -160,7 +163,7 @@ class Cerberus
 
     public static function runScript($script, $params)
     {
-        Log::out('Running ' . $script . ' with ' . json_encode($params), 1, 'green');
+        Log::out('Running ' . $script . ' with ' . json_encode($params), 1, ForegroundColor::GREEN);
         $id = ++self::$db['lastIdx'];
         $cmd = "nohup " . self::$phpPath . " " . $script . ".php cerberus '" . json_encode(["action" => "run", "params" => $params]) . "' " . (PHP_OS_FAMILY === "Linux" ? ">" : "&>") . " cerberus/" . $id . ".log & echo $!";
         $pid = shell_exec($cmd);
@@ -172,7 +175,7 @@ class Cerberus
             'pid' => (int)trim($pid),
             'status' => 'running'
         ];
-        Log::out('Run. PID=' . $pid, 1, 'green');
+        Log::out('Run. PID=' . $pid, 1, ForegroundColor::GREEN);
         self::writeDb();
     }
 

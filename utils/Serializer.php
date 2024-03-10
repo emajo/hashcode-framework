@@ -2,6 +2,8 @@
 
 namespace Utils;
 
+use Utils\ColoredString\ForegroundColor;
+
 class Serializer
 {
     private static function fileName($name, $method = 'serialize')
@@ -87,7 +89,7 @@ class Serializer
             mkdir('serialize/' . $_name);
         foreach ($_context as $_var) {
             global $$_var;
-            Log::out('Saving context for ' . $_var . '...', 1, 'gray');
+            Log::out('Saving context for ' . $_var . '...', 1, ForegroundColor::PURPLE);
             self::set($_name . '/' . $_var, $$_var);
         }
     }
