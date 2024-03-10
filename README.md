@@ -1,6 +1,4 @@
-# :crystall_ball: Solve all your problems with this framework!
-
-## (or maybe not)
+# :crystal_ball: Solve all your problems with this framework! (or maybe not)
 
 Prerequisites:
 
