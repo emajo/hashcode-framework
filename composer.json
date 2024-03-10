@@ -16,8 +16,7 @@
     "psr-4": {
       "Utils\\": "utils/",
       "Solver\\": "solver/",
-      "Solutions\\": "solutions/",
-      "Src\\": "framework/src"
+      "Solutions\\": "solutions/"
     }
   }
 }
