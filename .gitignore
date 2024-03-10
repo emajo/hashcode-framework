@@ -3,13 +3,5 @@ benchmarks
 .idea
 .DS_Store
 ./**/.DS_Store
-.google_pk
-.google_round
 
-rounds/**/output
-rounds/**/images
-rounds/**/cache
-rounds/**/serialize
-rounds/**/charts
-rounds/**/graphs
-rounds/**/cerberus
+files/
