@@ -33,8 +33,9 @@ class Solution {
     public function run()
     {
         $runId = 'run-' . StringUtils::random(5);
+        $startTime = date('His');
         $res = $this->inputParams
-            ->map(fn($params) => $this->exec($params, $runId));
+            ->map(fn($params) => $this->exec($params, $runId, $startTime));
 
         return $res;
 
@@ -48,13 +49,13 @@ class Solution {
      * 
      * @return void
      */
-    private function exec($params, string $runId): void
+    private function exec($params, string $runId, string $startTime): void
     {
         $executionId = 'out-' . StringUtils::random(5);
 
         $outputDir = join('/', [
             DirUtils::getScriptDir(),
-            Env::OUTPUT_DIR . $runId,
+            Env::OUTPUT_DIR . $startTime . "_{$runId}",
             join('-', array_values($params->toArray())) . "_{$runId}_{$executionId}.txt"
         ]);
 
