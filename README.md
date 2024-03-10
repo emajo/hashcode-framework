@@ -1,4 +1,6 @@
-# Solve all your problems with this framework! (or maybe not)
+# :crystall_ball: Solve all your problems with this framework!
+
+## (or maybe not)
 
 Prerequisites:
 
@@ -7,14 +9,14 @@ Prerequisites:
 
 ## Steps to run a script using this framework:
 
-# 1) Create the files
+### 1) Create the files
 
 - Create a folder named as you want (we will use _Example/_ in this example)
 - Create a file named _entrypoint.php_, this will be the entrypoint of you solution
 - Create a file for your actual script class (_ExampleScript.php_)
 - Create a file for you script parameters class (_ExampleParameters.php_)
 
-# 2) Define the parameters you will need in your script
+### 2) Define the parameters you will need in your script
 
 Your class has to extend the **Solver\Parameters** class.
 
@@ -35,7 +37,7 @@ class ExampleParameters extends Parameters
 
 Every attribute must be optional in the constructor and have a default value.
 
-# 3) Write you script
+### 3) Write your script
 
 Now extend the **Script** class and implement a constructor that accepts the previously defined parameters and a run function containg the actual script code.
 
@@ -60,7 +62,7 @@ class ExampleScript extends Script
 }
 ```
 
-## 4) Write you entrypoint
+### 4) Write your entrypoint
 
 As last thing we need to istantiate the solution and execute it as it follows.
 
