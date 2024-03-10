@@ -10,9 +10,9 @@ class ExampleScript extends Script
 
     public function run()
     {
-        sleep($this->params->param);
+        sleep($this->params->sleepTime);
         return json_encode([
-            'slept' => $this->params->param
+            'slept' => $this->params->sleepTime
         ]);
     }
 }

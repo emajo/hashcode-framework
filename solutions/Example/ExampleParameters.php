@@ -7,7 +7,6 @@ use Solver\Parameters;
 class ExampleParameters extends Parameters
 {
     public function __construct(
-        public ?string $param = "",
-        public ?string $secondParam = ""
+        public ?int $sleepTime = 0,
     ) {}
 }
