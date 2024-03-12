@@ -5,7 +5,22 @@ namespace Solver;
 /**
  * Runner Interface
  */
-interface Runner {
+abstract class Runner {
+
+    protected ?Notifier $notifier = null;
+
+    /**
+     * Sets the notifier for the Runner.
+     *
+     * @param Notifier $notifier The notifier to set.
+     * 
+     * @return void
+     */
+    public function setNotifier(?Notifier $notifier): void
+    {
+        $this->notifier = $notifier;
+    }
+
     /**
      * Executes the given script with the provided parameters and stores the output.
      * 
@@ -16,5 +31,5 @@ interface Runner {
      * 
      * @return void
      */
-    public function exec(string $script, $params, string $uid, string $outputPath): void;
+    public abstract function exec(string $script, $params, string $uid, string $outputPath): void;
 }

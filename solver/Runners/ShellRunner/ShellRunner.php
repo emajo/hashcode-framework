@@ -8,7 +8,7 @@ use Utils\Env;
 /**
  * Asynchronus runner implementation using shell_exec
  */
-class ShellRunner implements Runner
+class ShellRunner extends Runner
 {
     public function exec(string $script, $params, string $uid, string $outputPath): void
     {
@@ -24,6 +24,7 @@ class ShellRunner implements Runner
             escapeshellarg(json_encode($params)),
             $uid,
             $outputPath,
+            $this->notifier ? escapeshellarg($this->notifier::class) : null,
         ];
 
         shell_exec(self::asyncronizeCommmand(join(' ', $command), $uid));

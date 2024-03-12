@@ -3,8 +3,11 @@
 namespace Solver;
 
 use Illuminate\Support\Collection;
+use Utils\ColoredString\BackgroundColor;
+use Utils\ColoredString\ForegroundColor;
 use Utils\DirUtils;
 use Utils\Env;
+use Utils\Log;
 use Utils\StringUtils;
 
 /**
@@ -15,30 +18,32 @@ class Solution {
     /**
      * Solution constructor.
      *
-     * @param Runner $runner The runner instance used to execute the script.
      * @param string $script The script class.
      * @param Collection $inputParams The collection of input Parameters.
+     * @param Runner $runner The runner instance used to execute the script.
      */
     public function __construct(
-        private Runner $runner,
-        private string $script,
-        private Collection $inputParams,
+        protected string $script,
+        protected Collection $inputParams,
+        protected Runner $runner,
+        protected ?Notifier $notifier = null,
     ) {}
 
     /**
      * Runs the solution by executing the script with the input parameters.
      *
-     * @return Collection The collection of results.
+     * @return void
      */
-    public function run()
+    public function run(): void
     {
+        $this->runner->setNotifier($this->notifier);
         $runId = 'run-' . StringUtils::random(5);
         $startTime = date('His');
-        $res = $this->inputParams
+        
+        $this->inputParams
             ->map(fn($params) => $this->exec($params, $runId, $startTime));
 
-        return $res;
-
+        $this->onFinish($runId);
     }
 
     /**
@@ -60,5 +65,17 @@ class Solution {
         ]);
 
         $this->runner->exec($this->script, $params, "{$runId}_{$executionId}", $outputDir);
+    }
+
+    /**
+     * Callback method called when the solver finishes.
+     *
+     * @param string $runId The ID of the current run.
+     * 
+     * @return void
+     */
+    protected function onFinish(string $runId): void
+    {
+        Log::out("Started {$runId}", 0, ForegroundColor::BLACK, BackgroundColor::YELLOW);
     }
 }
