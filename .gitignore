@@ -4,4 +4,8 @@ benchmarks
 .DS_Store
 ./**/.DS_Store
 
-files/
+files/logs/
+solutions/**/files/output/
+solutions/**/files/logs/
+
+env.php
