@@ -66,9 +66,10 @@ As last thing we need to istantiate the solution and execute it as it follows.
 
 To the solution you must provide
 
-- a Runner, actually there are 2 implementations of the runner, the **SyncRunner**, to run the solution synchronusly and a **ShellRunner** that runs parallel processes by launching the script for each istance of the parameters using pm2
 - the script class of the script you want to run
 - a collection of parameters which for every instance the script will be executed
+- a Runner, actually there are 2 implementations of the runner, the **SyncRunner**, to run the solution synchronusly and a **ShellRunner** that runs parallel processes by launching the script for each istance of the parameters using pm2
+- an optional Notifier if you want a notify with your script results, at the moment there is only an implementation that uses **Telegram**, for this to work you need to set the TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID envs in the env.php file
 
 ```php
 <?php
@@ -82,19 +83,20 @@ use Solver\Runners\SyncRunner\SyncRunner;
 use Solver\Solution;
 
 $solution = new Solution(
-    // new SyncRunner,
-    new ShellRunner,
     ExampleScript::class,
     collect([
         new ExampleParameters(sleepTime: 5),
         new ExampleParameters(sleepTime: 100),
         new ExampleParameters(sleepTime: 0),
-    ])
+    ]),
+    // new SyncRunner,
+    new ShellRunner,
+    new TelegramNotifier,
 );
 
 $solution->run();
 ```
 
-At the end you will find a new folder in your script directory (_solutions/Example/files/output_) for the execution containing a file with the output for each Parameter instance you provided to the Solution.
+At the end you will find a new folder in your script directory (_solutions/Example/files/output_) for the execution containing a file with the output for each Parameter instance you provided to the Solution, if you passed also a notifier you will receive a notificatin with the output file.
 
 You will also find pm2 logs inside you root dir in the _files/logs_ folder.
