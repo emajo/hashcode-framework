@@ -9,7 +9,7 @@ use Utils\Log;
 /**
  * Synchronus runner implementation
  */
-class SyncRunner implements Runner
+class SyncRunner extends Runner
 {
     public function exec(string $script, $params, string $uid, string $outputPath): void
     {
