@@ -51,15 +51,4 @@ class FileManager
         return basename($this->inputName, '.in');
     }
 
-    public function outputV2($content, $extra = ''): void
-    {
-        $baseInputName = $this->getInputName();
-        $scriptName = DirUtils::getScriptName();
-        $basePath = DirUtils::getScriptDir() . '/' . self::$outputDir . '/' . $baseInputName . '/' . $scriptName . ($extra ? ('_' . $extra) : '');
-        $outputPath = $basePath . '.txt';
-        $sourcePath = $basePath . '.php.txt'; // in order to exclude from searches
-        File::write($outputPath, $content);
-        if (Autoupload::$scriptContent)
-            File::write($sourcePath, Autoupload::$scriptContent);
-    }
 }

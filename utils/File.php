@@ -20,4 +20,9 @@ class File
         fwrite($fh, $content);
         fclose($fh);
     }
+
+    public static function read($fileName): string
+    {
+        return file_get_contents($fileName);
+    }   
 }
