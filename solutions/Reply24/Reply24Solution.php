@@ -11,6 +11,6 @@ class Reply24Solution extends Solution
     {
         parent::onFinish($runId);
         $scriptFile = collect(explode('\\', $this->script))->last();
-        $this->notifier->pushFile(DirUtils::getScriptDir() . "/{$scriptFile}.php", "Source code for run {$runId} \n 💻 💻 💻 💻 💻 💻 💻");
+        $this->notifier->pushFile(DirUtils::getScriptDir() . "/{$scriptFile}.txt", "Source code for run {$runId} \n 💻 💻 💻 💻 💻 💻 💻");
     }
 }
