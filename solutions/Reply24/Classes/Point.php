@@ -13,7 +13,7 @@ class Point
     }
 
 
-    public static function connect($first, $second, Collection $tiles): array
+    public static function connect($first, $second, Collection $tiles, $previousMovement = null): array
     {
         $startingPoint = new Point($first->x, $first->y);
         $diffX = $second->x - $first->x;
@@ -25,12 +25,16 @@ class Point
         $xDirection = '';
         $yDirection = '';
         $cDirection = '';
+        $firstDirection = '';
         if ($diffX > 0) {
             $xDirection = 'leftRight';
             $cDirection = 'left';
         } elseif ($diffX < 0) {
             $xDirection = 'rightLeft';
             $cDirection = 'right';
+        }
+        if($diffX !== 0) {
+            $firstDirection = $cDirection;
         }
         if ($diffY > 0) {
             $yDirection .= 'downUp';
@@ -39,7 +43,52 @@ class Point
             $yDirection .= 'upDown';
             $cDirection .= 'Down';
         }
+        if(!$firstDirection) {
+            $firstDirection = $cDirection;
+        }
         $path = [];
+        $lastMovement = '';
+
+        if ($previousMovement) {
+            switch($previousMovement) {
+                case 'left':
+                    $previousMovement = 'right';
+                    break;
+                case 'right':
+                    $previousMovement = 'left';
+                    break;
+                case 'up':
+                    $previousMovement = 'down';
+                    break;
+                case 'down':
+                    $previousMovement = 'up';
+                    break;
+            }
+            
+            $firstTile = $tiles->where('direction.' . $previousMovement . ucfirst($firstDirection), true)->where('count', '>', 0)->sortBy('cost')->first();
+            if (!$firstTile) return [];
+
+            $firstTile->count -= 1;
+            switch ($previousMovement) {
+                case 'left':
+                    $startingPoint->x -= 1;
+                    $diffX--;
+                    break;
+                case 'right':
+                    $startingPoint->x == 1;
+                    $diffX--;
+                    break;
+                case 'up':
+                    $startingPoint->y -= 1;
+                    $diffY--;
+                    break;
+                case 'down':
+                    $startingPoint->y += 1;
+                    $diffY--;
+                    break;
+            }
+            $path[] = "{$firstTile->type} {$startingPoint->x} {$startingPoint->y}";
+        }
 
         if ($diffX !== 0) {
             $xTiles = $tiles->where('direction.' . $xDirection, true)->sortBy('cost');
@@ -62,6 +111,7 @@ class Point
                     break;
                 }
             }
+            $lastMovement = $cDirection;
         }
 
         if ($diffX !== 0 && $diffY !== 0) {
@@ -94,8 +144,12 @@ class Point
                     break;
                 }
             }
+            $lastMovement = lcfirst($cDirection);
         }
 
-        return $path;
+        return [
+            'lastMovement' => $lastMovement,
+            'path' => $path
+        ];
     }
 }

@@ -38,13 +38,13 @@ class Reply24Script extends Script
             $chunk->last()->nearestSilverPoint->visited = true;
 
             $pathGold1 = Point::connect($chunk->first(), $chunk->first()->nearestSilverPoint, $parsedInput['tiles']);
-
-            $pathSilver = Point::connect($chunk->first()->nearestSilverPoint, $chunk->last()->nearestSilverPoint, $parsedInput['tiles']);
-
-            $pathGold2 = Point::connect($chunk->last()->nearestSilverPoint, $chunk->last(), $parsedInput['tiles']);
-            array_pop($pathGold2);
+            array_pop($pathGold1['path']);
+            $pathSilver = Point::connect($chunk->first()->nearestSilverPoint, $chunk->last()->nearestSilverPoint, $parsedInput['tiles'], $pathGold1['lastMovement']);
+            array_pop($pathSilver['path']);
+            $pathGold2 = Point::connect($chunk->last()->nearestSilverPoint, $chunk->last(), $parsedInput['tiles'], $pathSilver['lastMovement']);
+            array_pop($pathGold2['path']);
             // TODO ricordarsi di reinserire la tile
-            return array_merge($pathGold1, $pathSilver, $pathGold2);
+            return array_merge($pathGold1['path'], $pathSilver['path'], $pathGold2['path']);
         })->collapse();
 
         return join(
